@@ -1,196 +1,110 @@
-// // script.js
-
-// // Item data
-// const items = [
-//     { srNo: 1, name: "A.C.(SPLIT)-Outdoor Part", volumeCFT: 0.22 },
-//     { srNo: 2, name: "A.C.(SPLIT)-Indoor Part", volumeCFT: 0.11 },
-//     { srNo: 3, name: "A.C.(WINDOW)", volumeCFT: 0.22 },
-//     { srNo: 4, name: "ALMIRAH", volumeCFT: 0.92 },
-//     { srNo: 5, name: "AQUARIUM", volumeCFT: 0.22 },
-//     // Add more items as necessary...
-//     { srNo: 118, name: "WRITING TABLE", volumeCFT: 0.34 }
-// ];
-
-// // Populate the checkbox group with item names
-// const itemCheckboxes = document.getElementById('itemCheckboxes');
-// items.forEach(item => {
-//     const checkboxDiv = document.createElement('div');
-//     checkboxDiv.innerHTML = `
-//         <input type="checkbox" id="item-${item.srNo}" value="${item.srNo}">
-//         <label for="item-${item.srNo}">${item.name}</label>
-//     `;
-//     itemCheckboxes.appendChild(checkboxDiv);
-// });
-
-// // Update quantity inputs when checkboxes are selected
-// itemCheckboxes.addEventListener('change', function() {
-//     const selectedCheckboxes = Array.from(itemCheckboxes.querySelectorAll('input[type="checkbox"]:checked'));
-//     const quantityInputsContainer = document.getElementById('quantityInputsContainer');
-    
-//     // Clear previous inputs
-//     quantityInputsContainer.innerHTML = '';
-
-//     // Create input fields for each selected item
-//     selectedCheckboxes.forEach(checkbox => {
-//         const selectedItem = items.find(item => item.srNo == checkbox.value);
-//         const inputDiv = document.createElement('div');
-//         inputDiv.innerHTML = `
-//             <label for="quantity-${selectedItem.srNo}">${selectedItem.name} Quantity:</label>
-//             <input type="number" id="quantity-${selectedItem.srNo}" placeholder="Quantity" value="1" min="1">
-//         `;
-//         quantityInputsContainer.appendChild(inputDiv);
-//     });
-// });
-
-// // Calculate volume when button is clicked
-// document.getElementById('calculate').onclick = function() {
-//     const selectedCheckboxes = Array.from(itemCheckboxes.querySelectorAll('input[type="checkbox"]:checked'));
-//     const resultsContainer = document.getElementById('resultsContainer');
-//     resultsContainer.innerHTML = '';
-
-//     let totalVolumeCFT = 0;
-//     let totalVolumeCBM = 0;
-
-//     // Calculate total volume for each selected item
-//     selectedCheckboxes.forEach(checkbox => {
-//         const selectedItem = items.find(item => item.srNo == checkbox.value);
-//         const quantityInput = document.getElementById(`quantity-${selectedItem.srNo}`);
-//         const quantity = parseInt(quantityInput.value);
-
-//         if (isNaN(quantity) || quantity <= 0) {
-//             alert(`Please enter a valid quantity for ${selectedItem.name}.`);
-//             return;
-//         }
-
-//         const itemVolumeCFT = selectedItem.volumeCFT * quantity;
-//         const itemVolumeCBM = itemVolumeCFT * 0.028;
-
-//         totalVolumeCFT += itemVolumeCFT;
-//         totalVolumeCBM += itemVolumeCBM;
-
-//         // Display individual item results
-//         const itemResult = document.createElement('p');
-//         itemResult.textContent = `${selectedItem.name}: ${itemVolumeCFT.toFixed(2)} CFT, ${itemVolumeCBM.toFixed(2)} CBM`;
-//         resultsContainer.appendChild(itemResult);
-//     });
-
-//     // Display total results
-//     const totalResult = document.createElement('h3');
-//     totalResult.textContent = `Total Volume: ${totalVolumeCFT.toFixed(2)} CFT, ${totalVolumeCBM.toFixed(2)} CBM`;
-//     resultsContainer.appendChild(totalResult);
-// };
-
-// // Reset functionality
-// document.getElementById('reset').onclick = function() {
-//     // Clear the selection and input
-//     Array.from(itemCheckboxes.querySelectorAll('input[type="checkbox"]')).forEach(checkbox => checkbox.checked = false); // Reset selection
-//     document.getElementById('quantityInputsContainer').innerHTML = ''; // Clear quantity inputs
-//     document.getElementById('resultsContainer').innerHTML = ''; // Clear results
-// };
-
-
-
-
 // Item data
 const items = [
-    { srNo: 1, name: "A.C.(SPLIT)-Outdoor Part", volumeCFT: 0.22 },
-    { srNo: 2, name: "A.C.(SPLIT)-Indoor Part", volumeCFT: 0.11 },
-    { srNo: 3, name: "A.C.(WINDOW)", volumeCFT: 0.22 },
-    { srNo: 4, name: "ALMIRAH", volumeCFT: 0.92 },
-    { srNo: 5, name: "AQUARIUM", volumeCFT: 0.22 },
-    { srNo: 118, name: "WRITING TABLE", volumeCFT: 0.34 }
+    { srNo: 1, name: "A.C.(SPLIT)-Outdoor Part", volumeCFT: 8 },
+    { srNo: 2, name: "A.C.(SPLIT)-Indoor Part", volumeCFT: 4 },
+    { srNo: 3, name: "A.C.(WINDOW)", volumeCFT: 8 },
+    { srNo: 4, name: "ALMIRAH", volumeCFT: 33 },
+    { srNo: 5, name: "AQUARIUM", volumeCFT: 8 },
+    { srNo: 118, name: "WRITING TABLE", volumeCFT: 12 }
 ];
 
-// Populate the checkbox group with item names
-const itemCheckboxes = document.getElementById('itemCheckboxes');
+// Populate the quantity inputs for each item
+const quantityInputsContainer = document.getElementById('quantityInputsContainer');
+
 items.forEach(item => {
-    const checkboxDiv = document.createElement('div');
-    checkboxDiv.style.display = 'flex'; // Use flexbox for horizontal alignment
-    checkboxDiv.style.alignItems = 'center'; // Center items vertically
+    const inputDiv = document.createElement('div');
+    inputDiv.style.display = 'flex';
+    inputDiv.style.alignItems = 'center';
+    inputDiv.style.margin = '10px 0'; // Add margin between each item
 
-    const checkbox = document.createElement('input');
-    checkbox.type = 'checkbox';
-    checkbox.id = `item-${item.srNo}`;
-    checkbox.value = item.srNo;
+    const quantityInput = document.createElement('input');
+    quantityInput.type = 'number';
+    quantityInput.id = `quantity-${item.srNo}`;
+    quantityInput.placeholder = "Quantity";
+    quantityInput.value = 0; // Set default quantity to 0
+    quantityInput.min = 0; // Allow zero as a minimum value
+    quantityInput.style.width = '50px';
+    quantityInput.style.margin = '0 5px';
+    quantityInput.style.padding = '5px'; // Add padding inside the input
 
-    const label = document.createElement('label');
-    label.htmlFor = `item-${item.srNo}`;
-    label.style.marginLeft = '10px'; // Add space between checkbox and label
-    label.textContent = item.name;
+    const decrementButton = document.createElement('button');
+    decrementButton.textContent = '-';
+    decrementButton.style.margin = '0 5px'; // Add margin around buttons
+    decrementButton.style.padding = '5px 10px'; // Add padding inside the button
+    decrementButton.onclick = function() {
+        let quantity = parseInt(quantityInput.value);
+        if (quantity > 0) {
+            quantityInput.value = quantity - 1;
+        }
+    };
 
-    // Append the checkbox and label to the container
-    checkboxDiv.appendChild(checkbox);
-    checkboxDiv.appendChild(label);
+    const incrementButton = document.createElement('button');
+    incrementButton.textContent = '+';
+    incrementButton.style.margin = '0 5px'; // Add margin around buttons
+    incrementButton.style.padding = '5px 10px'; // Add padding inside the button
+    incrementButton.onclick = function() {
+        let quantity = parseInt(quantityInput.value);
+        quantityInput.value = quantity + 1;
+    };
 
-    // Append the checkboxDiv to the main container
-    itemCheckboxes.appendChild(checkboxDiv);
-});
+    // Create a label and position it to the right of the buttons
+    const quantityLabel = document.createElement('label');
+    quantityLabel.textContent = `${item.name} Quantity:`;
+    quantityLabel.style.marginLeft = '10px'; // Add space between label and buttons
+    quantityLabel.style.padding = '5px'; // Add padding around the label
 
-// Update quantity inputs when checkboxes are selected
-itemCheckboxes.addEventListener('change', function() {
-    const selectedCheckboxes = Array.from(itemCheckboxes.querySelectorAll('input[type="checkbox"]:checked'));
-    const quantityInputsContainer = document.getElementById('quantityInputsContainer');
-    
-    // Clear previous inputs
-    quantityInputsContainer.innerHTML = '';
+    // Append elements to the inputDiv in the desired order
+    inputDiv.appendChild(decrementButton);
+    inputDiv.appendChild(quantityInput);
+    inputDiv.appendChild(incrementButton);
+    inputDiv.appendChild(quantityLabel); // Label is now at the end
 
-    // Create input fields for each selected item
-    selectedCheckboxes.forEach(checkbox => {
-        const selectedItem = items.find(item => item.srNo == checkbox.value);
-        const inputDiv = document.createElement('div');
-        inputDiv.innerHTML = `
-            <label for="quantity-${selectedItem.srNo}">${selectedItem.name} Quantity:</label>
-            <input type="number" id="quantity-${selectedItem.srNo}" placeholder="Quantity" value="1" min="1">
-        `;
-        quantityInputsContainer.appendChild(inputDiv);
-    });
+    // Append the inputDiv to the quantity inputs container
+    quantityInputsContainer.appendChild(inputDiv);
 });
 
 // Calculate volume when button is clicked
 document.getElementById('calculate').onclick = function() {
-    const selectedCheckboxes = Array.from(itemCheckboxes.querySelectorAll('input[type="checkbox"]:checked'));
     const resultsContainer = document.getElementById('resultsContainer');
     resultsContainer.innerHTML = '';
 
     let totalVolumeCFT = 0;
     let totalVolumeCBM = 0;
+    let resultDetails = ''; // To store item names and quantities
 
-    // Calculate total volume for each selected item
-    selectedCheckboxes.forEach(checkbox => {
-        const selectedItem = items.find(item => item.srNo == checkbox.value);
-        const quantityInput = document.getElementById(`quantity-${selectedItem.srNo}`);
+    // Calculate total volume for each item
+    items.forEach(item => {
+        const quantityInput = document.getElementById(`quantity-${item.srNo}`);
         const quantity = parseInt(quantityInput.value);
+        
+        totalVolumeCFT += item.volumeCFT * quantity;
 
-        if (isNaN(quantity) || quantity <= 0) {
-            alert(`Please enter a valid quantity for ${selectedItem.name}.`);
-            return;
+        // Add item name and quantity to result details
+        if (quantity > 0) {
+            resultDetails += `${item.name}: ${quantity}<br>`;
         }
-
-        const itemVolumeCFT = selectedItem.volumeCFT * quantity;
-        const itemVolumeCBM = itemVolumeCFT * 0.028;
-
-        totalVolumeCFT += itemVolumeCFT;
-        totalVolumeCBM += itemVolumeCBM;
-
-        // Display individual item results
-        const itemResult = document.createElement('p');
-        itemResult.textContent = `${selectedItem.name}: ${itemVolumeCFT.toFixed(2)} CFT, ${itemVolumeCBM.toFixed(2)} CBM`;
-        resultsContainer.appendChild(itemResult);
     });
 
-    // Display total results
-    const totalResult = document.createElement('h3');
-    totalResult.textContent = `Total Volume: ${totalVolumeCFT.toFixed(2)} CFT, ${totalVolumeCBM.toFixed(2)} CBM`;
-    resultsContainer.appendChild(totalResult);
+    // Convert total volume to cubic meters (1 CFT = 0.0283168 CBM)
+    totalVolumeCBM = totalVolumeCFT * 0.028;
+
+    // Display results
+    resultsContainer.innerHTML = `
+        <p>${resultDetails}</p>
+        <p><b>Total Volume: ${totalVolumeCFT.toFixed(2)} CFT</b></p>
+        <p><b>Total Volume: ${totalVolumeCBM.toFixed(2)} CBM </b></p>
+    `;
 };
 
 // Reset functionality
 document.getElementById('reset').onclick = function() {
-    // Clear the selection and input
-    Array.from(itemCheckboxes.querySelectorAll('input[type="checkbox"]')).forEach(checkbox => {
-        checkbox.checked = false; // Reset selection
+    // Clear all quantity inputs and reset to zero
+    items.forEach(item => {
+        const quantityInput = document.getElementById(`quantity-${item.srNo}`);
+        quantityInput.value = 0; // Reset quantity to 0
     });
-    
-    document.getElementById('quantityInputsContainer').innerHTML = ''; // Clear quantity inputs
-    document.getElementById('resultsContainer').innerHTML = ''; // Clear results
+
+    // Clear the results section
+    const resultsContainer = document.getElementById('resultsContainer');
+    resultsContainer.innerHTML = ''; // Clear previous results
 };
