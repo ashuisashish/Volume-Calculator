@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Volume Calculator</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Basic styles for the calculator */
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px; 
+        }
+        .calculator {
+            max-width: 600px;
+            margin: auto;
+        }
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 10px;
+        }
+        .checkbox-group label {
+            margin: 5px 0;
+        }
+        #resultsContainer {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Volume Calculator</h1>
+    </header>
+    <main>
+        <div class="calculator">
+            <h2>Select Items:</h2>
+            <div class="checkbox-group" id="itemCheckboxes">
+                <!-- Checkboxes will be dynamically populated -->
+            </div>
+            
+            <div id="quantityInputsContainer"></div>
+            
+            <button id="calculate">Calculate Volume</button>
+            <button id="reset">Reset</button>
+            
+            <h2>Results:</h2>
+            <div id="resultsContainer"></div>
+        </div>
+    </main>
+    <script src="script.js"></script>
+</body>
+</html>
